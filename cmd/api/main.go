@@ -10,16 +10,18 @@ import (
 )
 
 func main() {
-
 	log.SetReportCaller(true)
-	var r *chi.Mux = chi.NewRouter()
-	handlers.Handler(r)
+	log.SetLevel(log.TraceLevel)
+	log.SetFormatter(&log.JSONFormatter{
+		TimestampFormat: "2006-01-02 15:04:05",
+	})
 
+	var r = chi.NewRouter()
+	handlers.Handler(r)
 	fmt.Println("Starting GO API service")
 
 	err := http.ListenAndServe("localhost:3000", r)
 	if err != nil {
 		log.Error(err)
 	}
-
 }

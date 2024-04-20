@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	log "github.com/sirupsen/logrus"
 	"net/http"
 
 	"github.com/LovepreetSinghMe/goapi/internal/middleware"
@@ -18,7 +19,11 @@ func Handler(r *chi.Mux) {
 		w.WriteHeader(http.StatusNotFound)
 		jsonByte, _ := json.Marshal(map[string]string{"msg": "Not Found"})
 
-		w.Write([]byte(jsonByte))
+		_ , err := w.Write([]byte(jsonByte))
+		if err != nil {
+			log.Error(err)
+			return
+		}
 	})
 
 	r.Route("/account", func(router chi.Router) {
